@@ -1,0 +1,87 @@
+
+/* Geral*/
+.main {
+    margin-top: -20px;
+}
+
+
+.content {
+    max-width: 1080px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+}
+
+
+.green {
+    color: #00CC00;
+}
+
+/* Index */
+
+.banner {
+    width: 100%;
+    display: block;
+}
+
+.banner img {
+    width: 100%;
+    display: block;
+    max-height: 400px;
+}
+
+.banner h2 {
+    position: absolute;
+    top: 250px;
+    left: 100px;
+    width: 100%;
+}
+
+.banner h2 span{
+    background-color: black;
+    color: white;
+}
+
+/* Operações CRUD */
+.row h1 {
+    text-align: center;
+}
+
+.add-new-button {
+    padding: 10px 0;
+    text-align: right;
+}
+
+.table-action-button {
+    text-align: center;
+}
+
+/* Login */
+.login-container {
+    background-color: #eeeeee;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 15px;
+    border-color:#d2d2d2;
+    border-width: 5px;
+    box-shadow:0 1px 0 #cfcfcf;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+}
+
+.login-container h4 {
+    border:0 solid #fff;
+    border-bottom-width:1px;
+    padding-bottom:10px;
+    text-align: center;
+}
+
+.login-button  {
+    text-align: center;
+    padding-top: 10px;
+    margin-bottom: -5px;
+}
+
