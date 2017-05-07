@@ -33,14 +33,42 @@
 .banner h2 {
     position: absolute;
     top: 250px;
-    left: 100px;
+    padding-left: 100px;
     width: 100%;
 }
 
 .banner h2 span{
-    background-color: black;
+    background-color: #222;
     color: white;
 }
+
+/* Footer */
+
+.footer {
+    color: white;
+    background-color: #222;
+    padding-bottom: 20px;
+}
+.footer nav{
+    border: none;
+    text-align: center;
+    float: none;
+}
+.footer-navbar {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+}
+
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
 
 /* Operações CRUD */
 .row h1 {
