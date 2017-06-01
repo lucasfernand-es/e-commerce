@@ -30,6 +30,13 @@
     <!-- JQuery -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
 
+    <!-- Angular -->
+    <script src="node_modules/angular/angular.js" type="text/javascript"></script>
+
+    <script src="js/supplier/SupplierController.js" type="text/javascript"></script>
+
+
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>

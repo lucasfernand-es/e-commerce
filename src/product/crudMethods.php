@@ -13,6 +13,7 @@ function searchProduct($id) {
     try {
         $result=$GLOBALS['conn']->prepare("SELECT * FROM product WHERE productID = :productID LIMIT 1");
         $result->bindParam(':productID', $id);
+
         $result->execute();
 
         if($result->rowCount() > 0) {

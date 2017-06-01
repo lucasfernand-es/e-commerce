@@ -11,15 +11,15 @@ require_once "../connection.php";
 function searchSupplier($id) {
 
     try {
-        $result=$GLOBALS['conn']->prepare("SELECT * FROM supplier WHERE supplierID = :supplierID LIMIT 1");
-        $result->bindParam(':supplierID', $id);
+        $result=$GLOBALS['conn']->prepare("SELECT * FROM supplier WHERE id = :id LIMIT 1");
+        $result->bindParam(':id', $id);
         $result->execute();
 
         if($result->rowCount() > 0) {
 
             while($row = $result->fetch(PDO::FETCH_OBJ)) {
-                $data["supplierName"] = $row->supplierName;
-                $data["supplierEmail"] = $row->supplierEmail;
+                $data["name"] = $row->name;
+                $data["email"] = $row->email;
             }
 
 

@@ -11,8 +11,8 @@
                 $formData = "supplierName:supplierName, supplierEmail:supplierEmail, ";
                 $formClear = "clearSupplierForm();";
                 $setformData =
-                    "$(\"#supplierName\").val(data.supplierName);
-                    $(\"#supplierEmail\").val(data.supplierEmail);";
+                    "$(\"#supplierName\").val(data.name);
+                    $(\"#supplierEmail\").val(data.email);";
                 break;
             case "user":
                 $formVariables =
@@ -68,11 +68,11 @@
         fetchData(); // Função para carregar os dados na tela
         // Buscar
         function fetchData() {
-            var action = "loadAll"; // Identifica qual tipo de chamada está sendo requisita
+            var action = "select"; // Identifica qual tipo de chamada está sendo requisita
             $.ajax({
-                url: "src/<?php echo $class;?>/action.php", // Requisita a página "../action.php"
+                url: "src/action.php", // Requisita a página "../action.php"
                 method: "POST", // Utiliza o método $_POST para invocar a página
-                data: {action: action},
+                data: {action: action, class: "<?php echo $class;?>"},
                 success: function (data) {
                     $('#data-results').html(data); // Identifica aonde os dados serão exibidos
                 }
@@ -119,11 +119,11 @@
             $("#alert-modal").addClass("hide");
 
             var itemID = $(this).attr("id");
-            var action = "loadOne";
+            var action = "select";
             $.ajax({
-                url:  "src/<?php echo $class;?>/action.php",
+                url:  "src/action.php",
                 method:"POST",
-                data:{itemID:itemID, action:action},
+                data:{itemID:itemID, action:action, class: "<?php echo $class;?>"},
                 dataType:"json",
                 success:function(data){
 

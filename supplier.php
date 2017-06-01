@@ -5,7 +5,8 @@
     include_once "include/header.php";
 ?>
 
-<div class="content">
+
+<div class="content" ng-app="eCommerce" ng-controller="SupplierController">
 
     <div class="row">
         <h1><?php echo $title;?></h1>
@@ -45,6 +46,8 @@
     </div>
 
 </div>
+
+
 
 <?php include_once "include/footer.php"; ?>
 <?php include_once "src/crudModal.php"; ?>
