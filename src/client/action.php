@@ -17,8 +17,10 @@ if(isset($_POST["action"])) // Verifica se há um atributo action no php
     if($_POST["action"] == "login") {
         $data = $_POST["data"];
 
-        $userEmail = $data['userEmail'];
-        $userPassword = $data['userPassword'];
+        print_r($data)
+
+        $userEmail = $data['email'];
+        $userPassword = $data['password'];
 
         echo login($userEmail, $userPassword);
 

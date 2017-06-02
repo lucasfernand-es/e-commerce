@@ -21,137 +21,114 @@ if(isset($_POST["action"]))
         case "supplier":
             $class = new SupplierVO();
             break;
+        case "product":
+            $class = new ProductVO();
+            break;
+        case "client":
+            $class = new ClientVO();
+            break;
+        case "user":
+            $class = new UserVO();
+            break;
         default:
             break;
     }
 
     switch ($action) {
-        case "select":
-            if( isset($_POST["itemID"]) ) {
+        case "login":
+            $data = $_POST["data"];
 
-                $id = $_POST["itemID"];
+            //print_r($data);
+
+
+            $email = $data['email'];
+            $password = $data['password'];
+            $class->__set('email', $email);
+            $class->__set('password', $password);
+
+            echo $class->login();
+
+
+            break;
+        case "logout":
+
+            session_start();
+            unset($_SESSION['session']);
+            unset($_SESSION['admin']);
+
+            break;
+        case "retrieve":
+
+            if( isset($_POST["id"]) ) {
+
+                $id = $_POST["id"];
                 $class->__set('id', $id);
-                $result = $class->get();
+                $results = $class->retrieveUnique();
+
+                $result = $results[0];
 
 
-                echo json_encode($result);
+                print_r($result->toJSON());
             }
             else {
 
-                $result = $class->getAll();
-                if($result && !empty($result)){
-
-                    foreach ($result as $row) {
-                        include "./". $className ."/resultData.php";
-                    }
+                if( isset($_POST["search"]) ) {
+                    $object = $_POST["object"];
+                    $result = $class->retrieveSpecific($object);
                 }
                 else {
-                    include_once "loadNoResults.php";
+                    $result = $class->retrieve();
+                }
+
+
+                if(isset($_POST["load"]) ) {
+
+                    print_r($class->arrayToJSON($result));
+                }
+                else {
+                    if($result && !empty($result)){
+
+                        foreach ($result as $row) {
+                            $row = ($row); //json_decode
+
+
+                            include "./". $className ."/resultData.php";
+                        }
+                    }
+                    else {
+                        include_once "loadNoResults.php";
+                    }
                 }
 
             }
 
 
             break;
+        case "create":
+
+            $object = $_POST["object"];
+            return $class->create($object);
+
+            break;
+        case "update":
+            $object = $_POST["object"];
+            $id = $_POST["id"];
+
+            $class->__set('id', $id);
+
+            return $class->update($object);
+
+            break;
+
+        case "delete":
+
+            $id = $_POST["id"];
+            $class->__set('id', $id);
+            echo $class->delete();
+
+
+            break;
+        default:
+            break;
     }
-
-/*
- *     //For Load All Data
-    if ($_POST["action"] == "loadAll") {
-        try {
-            $result=$GLOBALS['conn']->prepare("SELECT * FROM supplier");
-            $result->execute();
-
-            if($result->rowCount() > 0) {
-
-                while($row = $result->fetch(PDO::FETCH_OBJ)) {
-                    include "resultData.php"; // inclui uma chamada da Supplier Data para exibir o HTML de cada linha
-                }
-
-            }
-            else {
-                include_once "../loadNoResults.php";
-            }
-        }
-        catch (PDOException $e) {
-            echo "Error: ".$e->getMessage();
-        }
-        finally {
-            $GLOBALS['conn']= null;
-        }
-    }
-    if ($_POST["action"] == "loadSuppliers") {
-        echo json_encode(searchAllSuppliers());
-    }
-
-    //For Load All Data
-    if ($_POST["action"] == "loadOne") {
-        echo json_encode(searchSupplier($_POST['id']));
-    }
-
-    // Adicionar um novo fornecedor
-    if($_POST["action"] == "add")
-    {
-
-        try {
-            $result = $GLOBALS['conn']->prepare("INSERT INTO supplier (supplierName, supplierEmail) VALUES (:supplierName, :supplierEmail)");
-
-            $result->bindParam(':supplierName', $_POST['supplierName']);
-            $result->bindParam(':supplierEmail', $_POST['supplierEmail']);
-            $result->execute();
-
-            echo 'true';
-
-        } catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        finally {
-            $GLOBALS['conn']= null;
-        }
-    }
-
-    // Alterar um fornecedor
-    if($_POST["action"] == "edit")
-    {
-
-
-        try {
-            $result = $GLOBALS['conn']->prepare("UPDATE supplier SET supplierName = :supplierName,  supplierEmail = :supplierEmail WHERE supplierID = :supplierID");
-
-            $result->bindParam(':supplierName', $_POST['supplierName']);
-            $result->bindParam(':supplierEmail', $_POST['supplierEmail']);
-            $result->bindParam(':supplierID', $_POST['itemID']);
-            $result->execute();
-
-            echo 'true';
-
-        } catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        finally {
-            $GLOBALS['conn']= null;
-        }
-    }
-
-    // Apagar um fornecedor
-    if($_POST["action"] == "delete")
-    {
-
-        try {
-
-            $result = $GLOBALS['conn']->prepare("DELETE FROM supplier WHERE supplierID = :supplierID");
-            $result->bindParam(':supplierID', $_POST['itemID']);
-            $result->execute();
-
-            echo 'true';
-        }
-        catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        finally {
-            $GLOBALS['conn']= null;
-        }
-    }
- */
-
 }

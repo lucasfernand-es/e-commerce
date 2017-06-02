@@ -42,7 +42,7 @@ function login($userEmail, $userPassword) {
                 $message = true;
             }
             else {
-                $message = 'Senha Incorreta.';
+                $message = '';
             }
         }
 

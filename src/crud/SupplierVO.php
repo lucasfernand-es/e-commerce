@@ -8,8 +8,8 @@ include_once "SupplierDAO.php";
 
 Class SupplierVO extends ValueObject {
 
-    public $name;
-    public $email;
+    protected $name;
+    protected $email;
 
 
     public function __construct(){

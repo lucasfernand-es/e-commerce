@@ -2,17 +2,19 @@
 
     session_start();
 
-    if(isset($_SESSION['userSession']))
+    if(isset($_SESSION['session']))
     {
-        $user =  $_SESSION['userSession'];
-        if(isset($_SESSION['userAdmin']) )
+        $user =  $_SESSION['session'];
+        if(isset($_SESSION['admin']) )
             $admin = true;
         else
             $admin = false;
     }
     else {
-
+        $user = null;
+        $admin = false;
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +49,7 @@
     <!-- CRUD Methods -->
     <!-- Inclui a página crud.php que contém os scripts javascript-->
 
-    <?php if ($class != '') include_once "src/crud.php"?>
+    <?php if ($class) include_once "src/crud.php"?>
     <script src="js/accessControl.js" type="text/javascript"></script>
 
 

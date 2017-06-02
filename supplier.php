@@ -1,4 +1,14 @@
 <?php
+
+    session_start();
+    if(!isset($_SESSION['session']) )
+    {
+        header("Location: index.php");
+
+
+        //&& isset($_SESSION['admin'])
+    }
+
     $title = "Fornecedores";
     $singularTitle = "Fornecedor";
     $class = "supplier";

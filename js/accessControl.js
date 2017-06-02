@@ -18,9 +18,9 @@ $(document).ready(function() {
         var action = 'login';
 
         $.ajax({
-            url : "src/user/action.php",    // Requisita a página ".../action.php"
+            url : "src/action.php",    // Requisita a página ".../action.php"
             method:"POST",  // Utiliza o método $_POST para invocar a página
-            data:{data:jsonData, action:action}, // Envia os dados para o servidor
+            data:{data:jsonData, action:action, class:'user'}, // Envia os dados para o servidor
             success:function(data){
 
                 if(data == true) {
@@ -40,9 +40,9 @@ $(document).ready(function() {
         var action = 'logout';
 
         $.ajax({
-            url: "src/user/action.php",    // Requisita a página ".../action.php"
+            url: "src/action.php",    // Requisita a página ".../action.php"
             method: "POST",  // Utiliza o método $_POST para invocar a página
-            data: {action: action}, // Envia os dados para o servidor
+            data: {action: action, class:'user'}, // Envia os dados para o servidor
             success: function (data) {
 
                 location.reload();

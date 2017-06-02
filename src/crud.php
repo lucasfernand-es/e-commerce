@@ -3,29 +3,34 @@
 
     <?php
         // Como o objetivo é deixar o mais genérico possível, esta função identifica os componentes do formulário para cada classe
+
+
+        $methodCalls = "";
+        $formAdd="";
+
         switch ($class) {
             case "supplier":
                 $formVariables =
                     "var supplierName = $(\"#supplierName\").val();
                     var supplierEmail = $(\"#supplierEmail\").val();";
-                $formData = "supplierName:supplierName, supplierEmail:supplierEmail, ";
+                $formData = "object:{name:supplierName, email:supplierEmail}, ";
                 $formClear = "clearSupplierForm();";
                 $setformData =
                     "$(\"#supplierName\").val(data.name);
                     $(\"#supplierEmail\").val(data.email);";
                 break;
-            case "user":
+            case "client":
                 $formVariables =
                     "var clientName = $(\"#clientName\").val();
                     var clientEmail = $(\"#clientEmail\").val();
                     var clientPhone = $(\"#clientPhone\").val();
                     var clientPassword = $(\"#clientPassword\").val();";
-                $formData = "clientName:clientName, clientEmail:clientEmail, clientPhone:clientPhone, clientPassword:clientPassword,";
+                $formData = "object:{name:clientName, email:clientEmail, phone:clientPhone, password:clientPassword},";
                 $formClear = "clearClientForm();";
                 $setformData =
-                    "$(\"#clientName\").val(data.clientName);
-                    $(\"#clientEmail\").val(data.clientEmail);
-                    $(\"#clientPhone\").val(data.clientPhone);
+                    "$(\"#clientName\").val(data.name);
+                    $(\"#clientEmail\").val(data.email);
+                    $(\"#clientPhone\").val(data.phone);
                     $(\"#clientPassword\").prop('disabled', true);
                     $(\"#clientConfirmPassword\").prop('disabled', true);
                     $(\"#clientPassword\").removeAttr('required');
@@ -47,14 +52,14 @@
                     var productCost = $(\"#productCost\").val();
                     var productQuantity = $(\"#productQuantity\").val();
                     var productSupplier = $(\"#productSupplier\").find('option:selected').attr('id');";
-                $formData = "productName:productName, productDescription:productDescription, productCost:productCost, productQuantity:productQuantity, productSupplier:productSupplier, ";
+                $formData = "object : {name:productName, description:productDescription, cost:productCost, quantity:productQuantity, idSupplier:productSupplier}, ";
                 $formClear = "clearProductForm();";
                 $setformData =
-                    "$(\"#productName\").val(data.productName);
-                    $(\"#productDescription\").val(data.productDescription);
-                    $(\"#productCost\").val(data.productCost);
-                    $(\"#productQuantity\").val(data.productQuantity);
-                    $('#productSupplier').val(data.productSupplier);";
+                    "$(\"#productName\").val(data.name);
+                    $(\"#productDescription\").val(data.description);
+                    $(\"#productCost\").val(data.cost);
+                    $(\"#productQuantity\").val(data.quantity);
+                    $('#productSupplier').val(data.idSupplier);";
                 $methodCalls = 'loadSuppliers();';
                 break;
 
@@ -68,72 +73,103 @@
         fetchData(); // Função para carregar os dados na tela
         // Buscar
         function fetchData() {
-            var action = "select"; // Identifica qual tipo de chamada está sendo requisita
+            var action = "retrieve";
             $.ajax({
                 url: "src/action.php", // Requisita a página "../action.php"
                 method: "POST", // Utiliza o método $_POST para invocar a página
                 data: {action: action, class: "<?php echo $class;?>"},
                 success: function (data) {
+                    //console.log(data);
                     $('#data-results').html(data); // Identifica aonde os dados serão exibidos
                 }
             });
         }
 
-        <?php echo $methodCalls;?>
-
         // Carregar Select de Fornecedores
         function loadSuppliers() {
-            var action = "loadSuppliers";
+            var action = "retrieve";
             $.ajax({
-                url: "src/supplier/action.php", // Requisita a página "../action.php"
+                url: "src/action.php", // Requisita a página "../action.php"
                 method: "POST", // Utiliza o método $_POST para invocar a página
-                data: {action: action},
+                data: {action: action, class: "supplier", load: "true"},
                 dataType:"json",
                 success: function (data) {
+                    //console.log(data);
                     var items = "";
 
-                    $.each(data, function(index,item)
+                    $.each(data, function(index, item)
                     {
-                        items += "<option id='"+ item.supplierID+"' value='"+ item.supplierID+"'>"+ item.supplierName +"</option>";
+                        var obj = JSON.parse(item);
+                        items += "<option id='"+ obj.id+"' value='"+ obj.id+"'>"+ obj.name +"</option>";
                     });
 
                     $("#productSupplier").html(items);
 
+                },
+                error:function (data) {
+                    console.log(data);
+                    showErrorAlert(data.error);
                 }
             });
         }
+
+
+        // Criar
+        $('#search').click(function(){
+            var action = "retrieve";
+
+            var searchText = $('#searchText').val();
+
+            console.log(searchText);
+
+            $.ajax({
+                url: "src/action.php", // Requisita a página "../action.php"
+                method: "POST", // Utiliza o método $_POST para invocar a página
+                data: {action: action, class: "product", object: {name: searchText}, search: true},
+                success: function (data) {
+                    console.log(data);
+                    $('#data-results').html(data); // Identifica aonde os dados serão exibidos
+                }
+            });
+
+
+        });
 
         // Criar
         $('#create').click(function(){
             $("#alert-modal").addClass("hide");
             $('#create-edit-modal').modal('show'); // Carrega a modal
-            <?php echo $formAdd;?>
-            <?php echo $formClear;?>
+            <?php if($formAdd) echo $formAdd;?>
+            <?php if($formClear) echo $formClear;?>
             $('.create-edit-modal-title').text("Adicionar Novo <?php echo $singularTitle; ?>"); //Define um título para a modal
-            $('#action').val('add');
+            $('#action').val('create');
             $('#action').html('Adicionar');
         });
 
+
+        <?php if($methodCalls) echo $methodCalls; ;?>
         // Alterar e Selecionar do banco
         $(document).on('click', '.edit', function(){
             $("#alert-modal").addClass("hide");
 
-            var itemID = $(this).attr("id");
-            var action = "select";
+            var id = $(this).attr("id");
+            var action = "retrieve";
             $.ajax({
                 url:  "src/action.php",
                 method:"POST",
-                data:{itemID:itemID, action:action, class: "<?php echo $class;?>"},
+                data:{id:id, action:action, class: "<?php echo $class;?>"},
                 dataType:"json",
                 success:function(data){
+
+                    //console.log(data);
 
 
                     $('#create-edit-modal').modal('show'); // Carrega a modal
                     $('.create-edit-modal-title').text("Editar <?php echo $singularTitle; ?>"); //Define um título para a modal
-                    $('#action').val('edit');
+                    $('#action').val('update');
                     $('#action').html('Editar');
 
-                    $("#itemID").val(itemID);
+                    $("#itemID").val(id);
 
                     <?php echo $setformData;?>
 
@@ -155,13 +191,15 @@
 
             var isFormValid = $("#create-edit-form").validator('validate').has('.has-error').length;
 
-
             if( !isFormValid ) {
                 $.ajax({
-                    url : "src/<?php echo $class;?>/action.php",    // Requisita a página ".../action.php"
+                    url : "src/action.php",    // Requisita a página ".../action.php"
                     method:"POST",  // Utiliza o método $_POST para invocar a página
-                    data:{<?php echo $formData;?> itemID:itemID, action:action}, // Envia os dados para o servidor
+                    data:{<?php echo $formData;?> id:itemID, action:action, class: "<?php echo $class;?>"}, // Envia os dados para o servidor
+
                     success:function(data){
+
+                        //console.log(data);
 
                         if(data == 'true') {
                             $('#create-edit-modal').modal('hide');
@@ -169,10 +207,10 @@
                             fetchData();  // Carrega os dados novamente
 
                             var message;
-                            if(action == 'add') {
+                            if(action == 'create') {
                                 message = 'Item inserido!';
                             }
-                            else if(action == 'edit'){
+                            else if(action == 'update'){
                                 message = 'Item alterado!';
                             }
                             showSuccessAlert(message);
@@ -200,13 +238,13 @@
 
 
         $('#delete').click(function(){
-            var itemID = $("#deleteItemID").val();
+            var id = $("#deleteItemID").val();
 
             var action = "delete"; //Define action variable value Delete
             $.ajax({
-                url: "src/<?php echo $class;?>/action.php",
+                url: "src/action.php",
                 method:"POST",
-                data:{itemID:itemID, action:action},
+                data:{id:id, action:action, class: "<?php echo $class;?>"},
                 success:function(data)
                 {
                     $('#delete-modal').modal('hide');

@@ -1,7 +1,17 @@
 <?php
+
+    session_start();
+    if(!isset($_SESSION['session']) )
+    {
+        header("Location: index.php");
+
+
+        //&& isset($_SESSION['admin'])
+    }
+
 $title = "Clientes";
 $singularTitle = "Cliente";
-$class = "user";
+$class = "client";
 include_once "include/header.php";
 ?>
 

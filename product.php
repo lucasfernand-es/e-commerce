@@ -11,6 +11,8 @@ include_once "include/header.php";
             <h1><?php echo $title;?></h1>
         </div>
 
+
+
         <div class="row">
             <div class="col-md-12">
                 <div id="alert" class="hide">
@@ -19,7 +21,16 @@ include_once "include/header.php";
                 </div>
             </div>
 
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input type="text" class="form-control"
+                           id="searchText" name="searchText" placeholder="Qual o produto que você deseja?">
+                </div>
+            </div>
 
+            <div class="col-md-2 text-center" >
+                <button id="search" type="submit" class="btn btn-primary" value=""> Buscar <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </div>
 
             <div class="col-md-12 add-new-button">
                 <button id="create"
@@ -38,7 +49,11 @@ include_once "include/header.php";
                         <th>Custo</th>
                         <th>Quantidade</th>
                         <th>Fornecedor</th>
-                        <th colspan="2" class="table-action-button">Ações</th>
+                        <?php if ($admin): ?>
+
+                            <th colspan="2" class="table-action-button">Ações</th>
+
+                        <?php endif;?>
                     </tr>
                     </thead>
                     <tbody id="data-results">

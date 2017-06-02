@@ -32,7 +32,7 @@
 
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input id="userEmail" name="userEmail" type="text" class="form-control" name="email" placeholder="Email"
+                            <input id="email" name="email" type="text" class="form-control" name="email" placeholder="Email"
                                    data-error="Informe um e-mail válido." required>
                             <div class="help-block with-errors"></div>
                         </div>
@@ -43,7 +43,7 @@
 
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input id="userPassword" name="userPassword" type="password" class="form-control" placeholder="Senha" required>
+                            <input id="password" name="password" type="password" class="form-control" placeholder="Senha" required>
                         </div>
 
                     </div>

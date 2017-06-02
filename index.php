@@ -20,6 +20,25 @@
 
 
         <ul>
+
+            <li><h1>New Version - APS 3</h1></li>
+            <li><h4>Codificar seu projeto orientado a objetos usando PHP e PDO, E diagrama de casos de uso e classes básico. <span class="glyphicon glyphicon-check green"></span></h4>
+                <blockquote>
+                    PDO está na classe  <code>src/crud/DAO.php</code>
+
+                    <p>Clique <a href="docs/images/ClassDiagram.png" target="_blank">aqui</a> para visualizar o diagrama de Classes.</p>
+                    <p>Clique <a href="docs/images/UseCase.png" target="_blank">aqui</a> para visualizar o diagrama de Caso de Uso.</p>
+                </blockquote>
+            </li>
+
+            <li>
+                <h4>A validação dos campos e recursos que melhoram a usabilidade (como botão de busca) devem ser implementados com Ajax. <span class="glyphicon glyphicon-check green"></span></h4>
+                <blockquote>
+                    <p>Validação Implementada na versão passada.</p>
+                    <p>Página de Produtos com barra de buscas.</p>  <p>Clique <a href="product.php">aqui</a> para acessar Produtos.</p>
+                </blockquote>
+            </li>
+            <li><h1>Last Version - APS 2</h1></li>
             <li>
                 <h4>Index: Apresentando o site com os principais acessos aos recursos. <span class="glyphicon glyphicon-check green"></span></h4>
                 <blockquote>
